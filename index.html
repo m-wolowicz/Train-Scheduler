@@ -1,0 +1,138 @@
+<!-- Homework Assingment: Firebase Assignment - Train Scheduler (Basic - Recommended) -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<!-- Linking Normalize.css -->
+	<link rel="stylesheet" type="text/css" href="assets/css/normalize.css">
+
+	<!-- Setting the Viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- BOOTSTRAP 3: Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Linking my own CSS -->
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+	<!-- Linking Google Web Fonts -->
+
+
+	<title>Train Scheduler</title>
+
+</head>
+<body>
+
+<!-- BEGIN HTML PAGE CONTENT -->
+
+<!-- JUMBOTRON -->
+<div class="jumbotron" style="background-color: #337ab7; color: white;">
+	<div class="container">
+		<h1>Anytime is Train Time</h1>
+		<p>Choo Choo. Chee Chee.</p>
+	</div>
+</div>
+<!-- End Jumbotron -->
+
+<div class="container">
+
+<!-- Panel 1 -->
+	<div class="panel panel-primary">
+
+		<div class="panel-heading">
+			<h3 class="panel-title"><span class="glyphicon glyphicon-calendar"></span>  Current Train Schedule</h3>
+		</div>
+
+		<div class="panel-body">
+			<!-- TABLE -->
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Train Name</th>
+							<th>Destination</th>
+							<th>Frequency (min)</th>
+							<th>Next Arrival</th>
+							<th>Minutes Away</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr>
+						  <td>Trenton Express</td>
+						  <td>Trenton</td>
+						  <td>25</td>
+						  <td>05:35 PM</td>
+						  <td>10</td>
+						</tr>
+						<tr>
+						  <td>Oregon Trail</td>
+						  <td>Salem, Oregon</td>
+						  <td>3600</td>
+						  <td>01:39 PM</td>
+						  <td>1154</td>
+						</tr>
+						<tr>
+						  <td>Midnight Carriage</td>
+						  <td>Philadelphia</td>
+						  <td>15</td>
+						  <td>05:35 PM</td>
+						  <td>10</td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+
+		</div>
+
+	</div>
+
+<!-- Panel 2 -->
+	<div class="panel panel-primary">
+
+		<div class="panel-heading">
+			<h3 class="panel-title"><span class="glyphicon glyphicon-plus"></span>  Add Train</h3>
+		</div>
+
+		<div class="panel-body">
+			<form>
+				<div class="form-group">
+					<label for="trainName">Train Name</label>
+					<input type="text" class="form-control" id="trainName" placeholder="Enter the name of your train">
+				</div>
+
+				<div class="form-group">
+					<label for="destination">Destination</label>
+					<input type="text" class="form-control" id="destination" placeholder="Enter your train's destination">
+				</div>
+
+				<div class="form-group">
+					<label for="firstTrainTime">First Train Time (HH:MM Military Time)</label>
+					<input type="text" class="form-control" id="firstTrainTime" placeholder="HH:MM">
+				</div>
+
+				<div class="form-group">
+					<label for="frequency">Frequency (min)</label>
+					<input type="text" class="form-control" id="frequency" placeholder="MM">
+				</div>
+
+				<button type="submit" class="btn btn-info" id="submitBttn">SUBMIT</button>
+			</form>
+		</div>
+
+	</div>
+
+</div>
+
+<!-- Linking jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+<!-- Linking my own JAVASCRIPT -->
+<script type="text/javascript" src="assets/javascript/game.js"></script>
+
+</body>
+</html>
