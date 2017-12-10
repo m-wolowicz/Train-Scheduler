@@ -12,17 +12,26 @@
 	<!-- Setting the Viewport -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<!-- Linking jQuery CDN -->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
 	<!-- BOOTSTRAP 3: Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 	<!-- Linking my own CSS -->
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
+	<!-- Linking my own JAVASCRIPT -->
+	<script type="text/javascript" src="assets/javascript/script.js"></script>
+
 	<!-- Linking Google Web Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Gravitas+One|Open+Sans:600" rel="stylesheet">
 
 	<!-- Linking Google Firebase Database -->
 	<script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
+
+	<!-- Linking Moment.js Library -->
+  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
 	<title>Train Scheduler</title>
 
@@ -46,10 +55,12 @@
 	<div class="panel panel-danger">
 
 		<div class="panel-heading">
-			<h3 class="panel-title"><span class="glyphicon glyphicon-calendar"></span>  Current Train Schedule</h3>
+			<h3 class="panel-title">
+				<span class="glyphicon glyphicon-calendar"></span>  Current Train Schedule</h3>
 		</div>
 
 		<div class="panel-body">
+
 			<!-- TABLE -->
 			<div class="table-responsive">
 				<table class="table">
@@ -116,18 +127,6 @@
 	</div>
 
 </div>
-
-<!-- Linking jQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-
-<!-- Linking my own JAVASCRIPT -->
-<script type="text/javascript" src="assets/javascript/script.js"></script>
-
-<!-- Linking MOMENT.JS -->
-<script src="assets/javascript/moment.js"></script>
-<script>
-    moment().format();
-</script>
 
 </body>
 </html>

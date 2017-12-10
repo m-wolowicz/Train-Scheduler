@@ -18,11 +18,34 @@ $(document).ready(function(){
 // GLOBAL VARIABLES
 // ================
 
+	//Creating a variable to hold the firebase databaseURL
+	var fireDatabase = firebase.database();
+
+	//Global Vars
 	var userInptTrainName;
 	var userInptDestination;
 	var userInptFirstTT;
 	var userInptFreq;
 	var userInptNOW;
+
+	//Variables to be used later wit momentjs
+	var nextArrival;
+	var minutesAway;
+
+// FUNCTIONS
+// ============
+function calcMinutesElapsed() {
+	var convertedFirstTrainTime = moment(userInptFirstTT, "HH:mm").subtract(1, "years");
+	return moment().diff(moment(convertedFirstTrainTime), "minutes");
+}
+
+function calcMinutesAway(minutesElapsed, userInptFreq) {
+	return parseInt(userInptFreq) - parseInt(minutesElapsed) % parseInt(userInptFreq);
+}
+
+function calcNextArrival(minutesAway) {
+	return moment().add(minutesAway, "m").format("hh:mm A");
+}
 
 // MAIN PROCESS
 // ============
@@ -40,47 +63,65 @@ $(document).ready(function(){
 		userInptFreq = $("#frequency").val().trim();
 		userInptNOW = new Date();
 
-	    // TESTING & DEBUGGING
-		console.log("The new Train Name is : " + userInptTrainName);
-		console.log("The new Destination is: " + userInptDestination);
-		console.log("The First Train's Time (in milliseconds) is: " + moment(userInptFirstTT, "HH:mm").format('hh:mm A'));
-		console.log("The frequency of the train is :" + moment(userInptFreq, "mm").format('mm'));
-		console.log("The current time in milliseconds is: " + moment(userInptNOW).format("x"));
-
-		//Adding information to the Firebase database
-		firebase.database().ref().push({
+		//Create a new local "temporary" object for holding train data
+		var newTrain = {
 			dataTrainName: userInptTrainName,
 			dataDestination: userInptDestination,
-			dataFirstTrainTime: moment(userInptFirstTT, "HH:mm").format('hh:mm A'),
-			dataFrequency: moment(userInptFreq, "mm").format('mm'),
-			dataTimeAdded: userInptNOW,
-		});
+			dataFirstTrainTime: userInptFirstTT,
+			dataFrequency: userInptFreq,
+			dataTimeAdded: userInptNOW
+		};
 
-		//With a listener, capture when a new item has been added to the database.
-		firebase.database().ref().limitToLast(1).on("child_added", function(snapshot) {
-			//Printout every new Train into a new row on the table:
+		//Adding information to the Firebase database
+		firebase.database().ref().push(newTrain);
 
-				//Create formula to calculate the Minutes Away
-				var a = moment(snapshot.val().dataFirstTrainTime, 'hh:mm A').format("x");
-					console.log("a: " + a);
-				var b = moment(snapshot.val().dataFrequency, "mm").format("x");
-					console.log("b: " + b);
-				var c = moment(userInptNOW);
-					console.log("c: " + c);
-				var x = a - c;
-					console.log(x);
-					moment(x, "x").format('x');
-					console.log("The train is " + moment(x).format("mm") + " minutes away");
+		//Log everything from the database
+		console.log("Your train's name is: " + newTrain.dataTrainName);
+		console.log("Your train's destination is: " + newTrain.dataDestination);
+		console.log("Your train first arrived at: " + newTrain.dataFirstTrainTime);
+		console.log("Your train's frequency is every " + newTrain.dataFrequency + " minutes.");
+		console.log("Your train's was added at: " + newTrain.dataTimeAdded);
 
-					var minutesAway = moment(x).format("mm");
+		//Alert
+		alert("Your train was successfully added to the Schedule");
 
-				//Create a variable that HOLDS the new row
-				var newRowItem = $("<tr><td>" + snapshot.val().dataTrainName + "</td><td>" + snapshot.val().dataDestination + "</td><td>" + snapshot.val().dataFrequency + "</td><td>" + snapshot.val().dataFirstTrainTime + "</td><td>" + minutesAway + "</td></tr>");
+	});
 
-				//Get the table and add new row to table at the end
-				$("table tbody").append(newRowItem);
-		});
+	//With a listener, capture when a new item has been added to the database.
+	firebase.database().ref().on("child_added", function(childSnapshot) {
 
+		//Store everything inoto a variable
+		var name = childSnapshot.val().dataTrainName;
+		var dest = childSnapshot.val().dataDestination;
+		var freq = childSnapshot.val().dataFrequency;
+
+		var first = childSnapshot.val().dataFirstTrainTime;
+		var now = childSnapshot.val().dataTimeAdded;
+
+		//Calculate the amount of minutes elapsed since the first train's arrival
+		var minutesSinceFirstTrane = calcMinutesElapsed();
+		console.log("Total minutes elapsed since the first train arrived: " + minutesSinceFirstTrane);
+
+		//calculate how many minutes away is the next train
+		minutesAway = calcMinutesAway(minutesSinceFirstTrane, userInptFreq);
+		console.log("The next train will be here in: " + minutesAway +" minutes.");
+
+		//Whenever current time matches next arrival time
+		if (minutesAway === parseInt(userInptFreq)) {
+			minutesAway = 0;
+		}
+
+
+
+		//Calculate the next arrival's time
+		nextArrival = calcNextArrival(minutesAway);
+		console.log("The next train will be here at: " + nextArrival);
+
+		//Create a variable that HOLDS the new row
+		var newRowItem = $("<tr><td>" + name + "</td><td>" + dest + "</td><td>" + freq + "</td><td>" + nextArrival + "</td><td>" + minutesAway + "</td></tr>");
+
+		//Get the table and add new row to table at the end
+		$("table tbody").append(newRowItem);
 
 	});
 
