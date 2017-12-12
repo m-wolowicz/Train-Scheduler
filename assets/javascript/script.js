@@ -63,13 +63,32 @@ function calcNextArrival(minutesAway) {
 		userInptFreq = $("#frequency").val().trim();
 		userInptNOW = new Date();
 
+		//Calculate the amount of minutes elapsed since the first train's arrival
+		var minutesSinceFirstTrane = calcMinutesElapsed();
+		console.log("Total minutes elapsed since the first train arrived: " + minutesSinceFirstTrane);
+
+		//Calculate how many minutes away is the next train
+		minutesAway = calcMinutesAway(minutesSinceFirstTrane, userInptFreq);
+		console.log("The next train will be here in: " + minutesAway +" minutes.");
+
+		//Whenever current time matches next arrival time
+		if (minutesAway === parseInt(userInptFreq)) {
+			minutesAway = 0;
+		}
+
+		//Calculate the next arrival's time
+	    nextArrival = calcNextArrival(minutesAway);
+	    console.log("The next train will be here at: " + nextArrival);
+
 		//Create a new local "temporary" object for holding train data
 		var newTrain = {
 			dataTrainName: userInptTrainName,
 			dataDestination: userInptDestination,
 			dataFirstTrainTime: userInptFirstTT,
 			dataFrequency: userInptFreq,
-			dataTimeAdded: userInptNOW
+			dataTimeAdded: userInptNOW,
+			dataNextArrival: nextArrival,
+			dataMinutesAway: minutesAway
 		};
 
 		//Adding information to the Firebase database
@@ -94,31 +113,13 @@ function calcNextArrival(minutesAway) {
 		var name = childSnapshot.val().dataTrainName;
 		var dest = childSnapshot.val().dataDestination;
 		var freq = childSnapshot.val().dataFrequency;
-
 		var first = childSnapshot.val().dataFirstTrainTime;
 		var now = childSnapshot.val().dataTimeAdded;
-
-		//Calculate the amount of minutes elapsed since the first train's arrival
-		var minutesSinceFirstTrane = calcMinutesElapsed();
-		console.log("Total minutes elapsed since the first train arrived: " + minutesSinceFirstTrane);
-
-		//calculate how many minutes away is the next train
-		minutesAway = calcMinutesAway(minutesSinceFirstTrane, userInptFreq);
-		console.log("The next train will be here in: " + minutesAway +" minutes.");
-
-		//Whenever current time matches next arrival time
-		if (minutesAway === parseInt(userInptFreq)) {
-			minutesAway = 0;
-		}
-
-
-
-		//Calculate the next arrival's time
-		nextArrival = calcNextArrival(minutesAway);
-		console.log("The next train will be here at: " + nextArrival);
+		var next = childSnapshot.val().dataNextArrival;
+		var away = childSnapshot.val().dataMinutesAway;
 
 		//Create a variable that HOLDS the new row
-		var newRowItem = $("<tr><td>" + name + "</td><td>" + dest + "</td><td>" + freq + "</td><td>" + nextArrival + "</td><td>" + minutesAway + "</td></tr>");
+		var newRowItem = $("<tr><td>" + name + "</td><td>" + dest + "</td><td>" + freq + "</td><td>" + next + "</td><td>" + away + "</td></tr>");
 
 		//Get the table and add new row to table at the end
 		$("table tbody").append(newRowItem);
